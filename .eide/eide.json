@@ -30,8 +30,12 @@
       "uploadConfigMap": {},
       "custom_dep": {
         "name": "default",
-        "incList": [],
-        "libList": [],
+        "incList": [
+          "src/driver/src"
+        ],
+        "libList": [
+          "src/driver/inc"
+        ],
         "defineList": []
       },
       "builderOptions": {
