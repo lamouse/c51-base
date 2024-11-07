@@ -8,7 +8,7 @@
         "EIDE.SourceTree.AutoSearchIncludePath": true,
         "EIDE.SourceTree.AutoSearchObjFile": true,
         "files.autoGuessEncoding": false,
-        "files.encoding": "gbk",
+        "files.encoding": "utf8",
         "EIDE.ARM.Option.AutoGenerateRTE_Components": false,
         "C_Cpp.errorSquiggles": "disabled",
         "files.associations": {
@@ -21,7 +21,10 @@
             "*.c++": "cpp",
             "*.cpp": "cpp",
             "*.cxx": "cpp",
-            "*.cc": "cpp"
+            "*.cc": "cpp",
+            "REG52.H": "cpp",
+            "INTRINS.H": "cpp",
+            "REGX52.H": "cpp"
         },
         "C_Cpp.default.configurationProvider": "cl.eide",
         "[yaml]": {

@@ -8,8 +8,9 @@
  * *********************************************
 */
 
-#include "REG52.H"
+
 #include "intrins.h"
+#include "led.h"
 
 void Delay1ms(void)	//@12.000MHz
 {
@@ -32,14 +33,12 @@ void DelayMs(unsigned int ms)	//@12.000MHz
 
 
 void main(){
-    P2 = 0xFE;
+	led1_on();
 
     while(1){
-		if(P2 == 0xFF){
-			P2 = 0xFE;
-		}
-        DelayMs(500);
-		P2 = P2 << 1;
-        P2 = P2 | 0x01;
+    	DelayMs(500);
+		led1_off();
+		DelayMs(500);
+		led1_on();
     }
 }
