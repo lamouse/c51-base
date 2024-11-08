@@ -14,6 +14,7 @@
 #include "led.h"
 #include "INTRINS.H"
 char h = 23, m = 59; s = 50, ms = 0;
+char puse = 0;
 void main()
 {
     char key_num= 0;
@@ -31,6 +32,9 @@ void main()
         if (key_num)
         {
             LCD_ShowNum(1, 13, key_num, 1);
+            if(key_num == 3){
+                puse = (~puse) & 0x1;
+            }
         }
 
     }
@@ -38,7 +42,9 @@ void main()
 unsigned int t0_count = 0;
 void Timer0_Routine(void) interrupt 1{
     ms = t0_count;
-    t0_count++;
+    if(!puse){
+        t0_count++;
+    }
     if( t0_count >= 1000){
         s++;
         if(s >= 60){
