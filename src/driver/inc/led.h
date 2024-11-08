@@ -18,8 +18,6 @@ enum led_ctrl{
 };
 
 void led_ctrl(char index, char ctrl);
-void led1_on();
-void led1_off();
 void led_loop(int ms);
 
 void led_off_all();

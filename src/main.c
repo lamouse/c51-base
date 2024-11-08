@@ -8,58 +8,27 @@
  * *********************************************
  */
 
-#include "LCD1602.h"
-#include "key.h"
-#include "time.h"
+#include "uart.h"
+#include "delay.h"
 #include "led.h"
-#include "INTRINS.H"
-char h = 23, m = 59; s = 50, ms = 0;
-char puse = 0;
+
+unsigned char led_index = 0;
 void main()
 {
-    char key_num= 0;
-    timer0_init();
-    LCD_Init();
-    LCD_ShowString(1, 1, "timer");
-    LCD_ShowString(2, 1, "  :  :    ");
-    LCD_ShowString(1, 8, "key:");
-    while (1) {
-        LCD_ShowNum(2, 1, h, 2);
-        LCD_ShowNum(2, 4, m, 2);
-        LCD_ShowNum(2, 7, s, 2);
-        LCD_ShowNum(2, 10, ms, 3);
-        key_num = key();
-        if (key_num)
-        {
-            LCD_ShowNum(1, 13, key_num, 1);
-            if(key_num == 3){
-                puse = (~puse) & 0x1;
-            }
-        }
+    UART_init();
 
+    while (1) {
+        if(led_index){
+            led_ctrl(led_index, led_reversible);
+            led_index = 0;
+            UART_send('O');
+        }
     }
 }
-unsigned int t0_count = 0;
-void Timer0_Routine(void) interrupt 1{
-    ms = t0_count;
-    if(!puse){
-        t0_count++;
-    }
-    if( t0_count >= 1000){
-        s++;
-        if(s >= 60){
-            s = 0;
-            m++;
-        }
-        if(m >= 60){
-            h++;
-            m = 0;
-        }
-        if(h >= 24){
-            h = 0;
-        }
-        t0_count = 0;
-    }
 
-    timer_reset();
+void UART_Routine(void) interrupt 4{
+    if(RI == 1){
+        led_index = SBUF;
+        RI = 0;
+    }
 }

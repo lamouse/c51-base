@@ -1,11 +1,5 @@
 #include "led.h"
 #include "delay.h"
-void led1_on(){
-    P2_0 = 0;
-}
-void led1_off(){
-    P2_0 = 1;
-}
 
 int current_led_state = 0;
 
@@ -44,11 +38,11 @@ void led_ctrl(char index, char ctrl){
         return;
     }
 
-    if(ctrl == 0 && led_state == 1){
+    if(ctrl == 0){
         LED_ALL &= ~(1 << (index - 1));
     }
 
-    if(ctrl == 1 && led_state == 0){
+    if(ctrl == 1){
         LED_ALL ^= (1 << (index - 1));
     }
 }
