@@ -9,36 +9,47 @@
 */
 
 
-#include "intrins.h"
 #include "led.h"
-
-void Delay1ms(void)	//@12.000MHz
-{
-	unsigned char data i, j;
-
-	i = 2;
-	j = 239;
-	do
-	{
-		while (--j);
-	} while (--i);
-}
-
-void DelayMs(unsigned int ms)	//@12.000MHz
-{
-	while (ms--) {
-		Delay1ms();
-	}
-}
-
+#include "key.h"
+#include "delay.h"
+#define MAX_LED_INDEX 8
+#define MIN_LED_INDEX 1
 
 void main(){
-	led1_on();
-
+	int led_index = 0;
     while(1){
-    	DelayMs(500);
-		led1_off();
-		DelayMs(500);
-		led1_on();
+    	// if(key1_put_down()){
+		// 	LED_1 = led_on;
+		// }else
+		// {
+		// 	led1_off();
+		// }
+
+		if (key2_put_down())
+		{
+			DelayMs(20);
+			while (key2_put_down());
+			DelayMs(20);
+			led_off_all();
+			led_ctrl(++led_index, led_reversible);
+		}
+
+		if(KEY_3 == KEY_DOWN){
+			DelayMs(20);
+			while (KEY_3 == KEY_DOWN);
+			DelayMs(20);
+			led_off_all();
+ 			led_ctrl(--led_index, led_reversible);
+		}
+		if(led_index > MAX_LED_INDEX){
+			led_off_all();
+			led_index = MIN_LED_INDEX;
+			led_ctrl(MIN_LED_INDEX, led_reversible);
+		}
+		if(led_index < MIN_LED_INDEX){
+			led_off_all();
+			led_index = MAX_LED_INDEX;
+			led_ctrl(MAX_LED_INDEX, led_reversible);
+		}
     }
 }
