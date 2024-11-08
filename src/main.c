@@ -9,19 +9,12 @@
 */
 
 
-#include "key.h"
-#include "delay.h"
-#include "nixie.h"
-#define MAX_LED_INDEX 8
-#define MIN_LED_INDEX 1
+#include "LCD1602.h"
+
 
 void main(){
-	int led_index = 0;
+	LCD_Init();
     while(1){
-		int i = 0;
- 		for(; i<100; i++)
-		{
-			show_num(9879);
-		}
+		LCD_ShowString(1, 1, "test 123: ");
     }
 }
