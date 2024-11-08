@@ -7,4 +7,6 @@ int key2_put_down();
 enum key_ctrl{
     KEY_DOWN = 0
 };
+
+unsigned char matrixKey();
 #endif
