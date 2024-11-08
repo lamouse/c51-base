@@ -13,7 +13,7 @@
 #include "time.h"
 #include "led.h"
 #include "INTRINS.H"
-char h = 0, m = 0; s = 0, ms = 0;
+char h = 23, m = 59; s = 50, ms = 0;
 void main()
 {
     char key_num= 0;
@@ -48,6 +48,9 @@ void Timer0_Routine(void) interrupt 1{
         if(m >= 60){
             h++;
             m = 0;
+        }
+        if(h >= 24){
+            h = 0;
         }
         t0_count = 0;
     }
