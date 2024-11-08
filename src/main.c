@@ -10,33 +10,32 @@
 
 #include "LCD1602.h"
 #include "key.h"
-
+#include "time.h"
+#include "led.h"
+char led_index = 0;
 void main()
 {
-    char ke_num;
-    int ser;
-    int count;
-    LCD_Init();
-
-beg:
-	ser = 0;
-	count = 1;
-    LCD_ShowString(1, 1, "           ");
-    LCD_ShowString(2, 1, "           ");
-    LCD_ShowString(1, 1, "num ser: ");
+    char last_led_index = led_index;
+    timer0_init();
     while (1) {
-        ke_num = matrixKey();
-        if (ke_num && ke_num <= 10) {
-            ser *= 10;
-            ser += ke_num % 10;
-            LCD_ShowNum(2, 1, ser, count++);
+        if (last_led_index != led_index && led_index)
+        {
+            led_off_all();
+            led_ctrl(led_index, led_on);
+            last_led_index = led_index;
+        }
 
-            if (count > 5) {
-                goto beg;
-            }
-        }
-        if (ke_num == 16) {
-            goto beg;
-        }
     }
+}
+unsigned int t0_count = 0;
+void Timer0_Routine(void) interrupt 1{
+    if(t0_count++ > 1000){
+        led_index++;
+        if(led_index > 8){
+            led_index = 1;
+        }
+        t0_count = 0;
+    }
+
+    timer_reset();
 }
