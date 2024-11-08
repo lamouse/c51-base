@@ -1,14 +1,37 @@
 #include "key.h"
 #include "delay.h"
 #include "Atmel/REGX52.H"
-int key1_put_down()
+char key()
 {
-    return !P3_1 ? 1 : 0;
-}
+    unsigned key_num = 0;
+    if (P3_1 == KEY_DOWN) {
+        DelayMs(20);
+        while (P3_1 == KEY_DOWN);
+        DelayMs(20);
+        key_num = 1;
+    }
 
-int key2_put_down()
-{
-    return !P3_0 ? 1 : 0;
+    if (P3_0 == KEY_DOWN) {
+        DelayMs(20);
+        while (P3_0 == KEY_DOWN);
+        DelayMs(20);
+        key_num = 2;
+    }
+
+    if (P3_2 == KEY_DOWN) {
+        DelayMs(20);
+        while (P3_2 == KEY_DOWN);
+        DelayMs(20);
+        key_num = 3;
+    }
+
+    if (P3_3 == KEY_DOWN) {
+        DelayMs(20);
+        while (P3_3 == KEY_DOWN);
+        DelayMs(20);
+        key_num = 4;
+    }
+    return key_num;
 }
 
 unsigned char matrixKey()
