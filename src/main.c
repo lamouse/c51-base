@@ -20,15 +20,12 @@ void main()
     timer0_init();
     LCD_Init();
     LCD_ShowString(1, 1, "timer");
-
+    LCD_ShowString(2, 1, "  :  :    ");
     LCD_ShowString(1, 8, "key:");
     while (1) {
         LCD_ShowNum(2, 1, h, 2);
-        LCD_ShowString(2, 3, ":");
         LCD_ShowNum(2, 4, m, 2);
-        LCD_ShowString(2, 6, ":");
         LCD_ShowNum(2, 7, s, 2);
-        LCD_ShowString(2, 9, " ");
         LCD_ShowNum(2, 10, ms, 3);
         key_num = key();
         if (key_num)
