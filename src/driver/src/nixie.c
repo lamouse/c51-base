@@ -51,7 +51,8 @@
 #define LED_SEGMENT_NUM_7 0x7
 #define LED_SEGMENT_NUM_8 0x7F
 #define LED_SEGMENT_NUM_9 0x6f
-static char nixie_num[] = {0x3F, 0x6, 0x5B, 0x4f, 0x66, 0x6d, 0x7d, 0x7, 0x7F, 0x6f};
+static char nixie_num[] = {LED_SEGMENT_NUM_0, LED_SEGMENT_NUM_1, LED_SEGMENT_NUM_2, LED_SEGMENT_NUM_3, LED_SEGMENT_NUM_4,
+                           LED_SEGMENT_NUM_5, LED_SEGMENT_NUM_6, LED_SEGMENT_NUM_7, LED_SEGMENT_NUM_8, LED_SEGMENT_NUM_9};
 char get_num_index(char num)
 {
     switch (num) {
@@ -126,21 +127,22 @@ void show_index_num(char index, char num)
     P0 = 0x00;
 }
 
-void show_num(int num){
+void show_num(int num)
+{
     char count = 0;
     char num_arr[8];
-    int i = 1;
+    int i  = 1;
     char s = num < 0 ? get_num_index(-1) : 0;
-    for(; num; i++){
+    for (; num; i++) {
         num_arr[count++] = num % 10;
         num /= 10;
     }
 
-    for(i = 0; i < count; i++){
-        show_index_num(i+1, num_arr[i]);
+    for (i = 0; i < count; i++) {
+        show_index_num(i + 1, num_arr[i]);
     }
 
-    if(s){
+    if (s) {
         P0 = s;
     }
 }
