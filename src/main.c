@@ -10,32 +10,27 @@
 
 
 
-#include "nixie.h"
-#include "key.h"
-#include "time.h"
+#include "LCD1602.h"
+#include "temperature.h"
+#include "temperature.h"
 
 void main()
 {
-    char key_num = 0, k_t;
-    timer0_init();
+    float temperature;
+    LCD_Init();
+    LCD_ShowString(1, 1, "temperature:");
+
     while (1) {
-        key_num = key();
-        if(key_num){
-            k_t = key_num;
+        DS_convert_T();
+        temperature =  get_temperature();
+        if(temperature < 0){
+            LCD_ShowChar(2, 1, '-');
+            temperature = -temperature;
+        }else{
+            LCD_ShowChar(2, 1, '+');
         }
-        nixie_scan(1, k_t);
+        LCD_ShowNum(2, 2, temperature, 3);
+        LCD_ShowChar(2, 5, '.');
+        LCD_ShowNum(2, 6, (unsigned long)(temperature * 10000) % 10000, 3);
     }
-}
-
-void time0_routine() interrupt 1 {
-    static unsigned int T_count;
-    T_count++;
-    if(T_count % 20){
-        key_loop();
-
-    }
-    if(T_count % 2){
-        nixie_loop();
-    }
-    timer_reset();
 }
