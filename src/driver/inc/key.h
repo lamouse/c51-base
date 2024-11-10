@@ -8,4 +8,6 @@ enum key_ctrl{
 };
 
 unsigned char matrixKey();
+
+void key_loop();
 #endif

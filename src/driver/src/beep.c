@@ -3,7 +3,7 @@
 #include <INTRINS.H>
 sbit BEEP = P2 ^ 5;
 
-static Delay500us(void)	//@11.0592MHz
+static void Delay500us(void)	//@11.0592MHz
 {
 	unsigned char data i;
 

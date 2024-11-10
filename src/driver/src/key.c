@@ -1,37 +1,45 @@
 #include "key.h"
 #include "delay.h"
 #include "Atmel/REGX52.H"
+
+static unsigned char key_number = 0;
 char key()
 {
-    unsigned key_num = 0;
-    if (P3_1 == KEY_DOWN) {
-        DelayMs(20);
-        while (P3_1 == KEY_DOWN);
-        DelayMs(20);
-        key_num = 1;
+    unsigned t = key_number;
+    key_number = 0;
+    return t;
+}
+
+char key_state()
+{
+    if (P3_1 == KEY_DOWN) return 1;
+    if (P3_0 == KEY_DOWN) return 2;
+
+    if (P3_2 == KEY_DOWN) return 3;
+
+    if (P3_3 == KEY_DOWN) return 4;
+    return 0;
+}
+void key_loop()
+{
+    static unsigned char last_key = 0, current_key = 0;
+    last_key    = current_key;
+    current_key = key_state();
+    if (last_key == 1 && current_key == 0) {
+        key_number = 1;
     }
 
-    if (P3_0 == KEY_DOWN) {
-        DelayMs(20);
-        while (P3_0 == KEY_DOWN);
-        DelayMs(20);
-        key_num = 2;
+    if (last_key == 2 && current_key == 0) {
+        key_number = 2;
     }
 
-    if (P3_2 == KEY_DOWN) {
-        DelayMs(20);
-        while (P3_2 == KEY_DOWN);
-        DelayMs(20);
-        key_num = 3;
+    if (last_key == 3 && current_key == 0) {
+        key_number = 3;
     }
 
-    if (P3_3 == KEY_DOWN) {
-        DelayMs(20);
-        while (P3_3 == KEY_DOWN);
-        DelayMs(20);
-        key_num = 4;
+    if (last_key == 4 && current_key == 0) {
+        key_number = 4;
     }
-    return key_num;
 }
 
 unsigned char matrixKey()

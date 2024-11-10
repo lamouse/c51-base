@@ -51,8 +51,9 @@
 #define LED_SEGMENT_NUM_7 0x7
 #define LED_SEGMENT_NUM_8 0x7F
 #define LED_SEGMENT_NUM_9 0x6f
-static char nixie_num[] = {LED_SEGMENT_NUM_0, LED_SEGMENT_NUM_1, LED_SEGMENT_NUM_2, LED_SEGMENT_NUM_3, LED_SEGMENT_NUM_4,
-                           LED_SEGMENT_NUM_5, LED_SEGMENT_NUM_6, LED_SEGMENT_NUM_7, LED_SEGMENT_NUM_8, LED_SEGMENT_NUM_9};
+static char nixie_buff[8] = {10, 10, 10, 10, 10, 10, 10, 10};
+static char nixie_num[]   = {LED_SEGMENT_NUM_0, LED_SEGMENT_NUM_1, LED_SEGMENT_NUM_2, LED_SEGMENT_NUM_3, LED_SEGMENT_NUM_4,
+                             LED_SEGMENT_NUM_5, LED_SEGMENT_NUM_6, LED_SEGMENT_NUM_7, LED_SEGMENT_NUM_8, LED_SEGMENT_NUM_9, 0x4};
 char get_num_index(char num)
 {
     switch (num) {
@@ -83,6 +84,7 @@ char get_num_index(char num)
 
 void show_index_num(char index, char num)
 {
+    P0 = 0x00;
     switch (index) {
         case 1: {
             LED_SEGMENT_DISPLAY_1;
@@ -123,8 +125,6 @@ void show_index_num(char index, char num)
     }
 
     P0 = nixie_num[num];
-    DelayMs(1);
-    P0 = 0x00;
 }
 
 void show_num(int num)
@@ -139,10 +139,38 @@ void show_num(int num)
     }
 
     for (i = 0; i < count; i++) {
-        show_index_num(i + 1, num_arr[i]);
+        nixie_scan(i + 1, num_arr[i]);
     }
 
     if (s) {
         P0 = s;
+    }
+}
+
+void nixie_loop()
+{
+    unsigned char i;
+    for (i = 1; i < 9; i++) {
+        if (nixie_buff[i - 1] <= 9) {
+            show_index_num(i, nixie_buff[i - 1]);
+        }
+    }
+}
+
+void nixie_scan(char index, char num)
+{
+    nixie_buff[index - 1] = num;
+}
+
+void nixie_clear(char index)
+{
+    nixie_buff[index - 1] = 10;
+}
+
+void nixie_clear_all()
+{
+    unsigned char i;
+    for (i = 0; i < 8; i++) {
+        nixie_buff[i] = 10;
     }
 }
