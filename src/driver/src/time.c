@@ -12,6 +12,6 @@ void timer0_init(){
 }
 
 void timer_reset(){
-	TL0 = 0x66;				//设置定时初始值
-	TH0 = 0xFC;				//设置定时初始值
+	TL0 = 0x9C;				//设置定时初始值
+	TH0 = 0xFF;				//设置定时初始值
 }
