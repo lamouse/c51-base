@@ -10,27 +10,18 @@
 
 
 
-#include "LCD1602.h"
-#include "temperature.h"
-#include "temperature.h"
+#include "lcd12864.h"
 
 void main()
 {
-    float temperature;
-    LCD_Init();
-    LCD_ShowString(1, 1, "temperature:");
+	lcd12864_init();
+
+	lcd12864_show_string(0,0,"Hello World!");
+	lcd12864_show_string(0,1,"测试中文");
+	lcd12864_show_string(0,2,"一二三\xfd");
+	lcd12864_show_string(0,3,"四五");
 
     while (1) {
-        DS_convert_T();
-        temperature =  get_temperature();
-        if(temperature < 0){
-            LCD_ShowChar(2, 1, '-');
-            temperature = -temperature;
-        }else{
-            LCD_ShowChar(2, 1, '+');
-        }
-        LCD_ShowNum(2, 2, temperature, 3);
-        LCD_ShowChar(2, 5, '.');
-        LCD_ShowNum(2, 6, (unsigned long)(temperature * 10000) % 10000, 3);
+
     }
 }
