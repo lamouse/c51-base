@@ -8,56 +8,22 @@
  * *********************************************
  */
 
-#include "time.h"
 #include "Atmel/REGX52.H"
-#include "key.h"
-#include "nixie.h"
-unsigned int t0_count = 0, speed = 0;
-int compar = 0;
-unsigned char key_num;
-sbit Motor=P1^0;
+#include "delay.h"
+#include "LCD1602.h"
+#include "XPT2046.h"
+unsigned int ADValue;
 void main()
 {
-
-    timer0_init();
-    compar = 5;
+    LCD_Init();
+    LCD_ShowString(1, 1, "ADJ  NTC  GR");
     while (1) {
-        key_num = key();
-        if (key_num == 1) {
-            speed++;
-            speed %= 4;
-        }
-        if (key_num == 2) {
-            speed--;
-            speed %= 4;
-        }
-        if (speed == 0) {
-            compar = 0;
-        }
-        if (speed == 1) {
-            compar = 5;
-        }
-        if (speed == 2) {
-            compar = 50;
-        }
-        if (speed == 3) {
-            compar = 100;
-        }
-
-        nixie_scan(8, speed);
-    }
-}
-
-void time_routine(void) interrupt 1
-{
-	t0_count++;
-    t0_count %= 100;
-    key_loop();
-    timer_reset();
-    nixie_loop();
-    if (t0_count < compar) {
-        Motor = 1;
-    } else {
-        Motor = 0;
+        ADValue = XPT2046_ReadAD(XPT2046_XP);   // 读取AIN0，可调电阻
+        LCD_ShowNum(2, 1, ADValue, 3);          // 显示AIN0
+        ADValue = XPT2046_ReadAD(XPT2046_YP);   // 读取AIN1，热敏电阻
+        LCD_ShowNum(2, 6, ADValue, 3);          // 显示AIN1
+        ADValue = XPT2046_ReadAD(XPT2046_VBAT); // 读取AIN2，光敏电阻
+        LCD_ShowNum(2, 11, ADValue, 3);         // 显示AIN2
+        DelayMs(100);
     }
 }
